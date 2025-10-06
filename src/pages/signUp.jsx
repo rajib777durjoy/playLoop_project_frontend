@@ -4,7 +4,7 @@ import { FaUserCircle } from "react-icons/fa";
 import { useNavigate } from "react-router";
 import useAxiosPublic from '../hooks/useAxiosPublic';
 import { ImSpinner9 } from "react-icons/im";
-import axios from 'axios';
+
 const SignUp = () => {
     const [step, setstep] = useState(1)
     const [userName, setUserName] = useState("");
@@ -36,7 +36,7 @@ const SignUp = () => {
         formData.append("password", Password);
         formData.append("photoUrl", backendImage);
         try {
-            const result = await axios.post('http://localhost:8000/api/auth/signup', formData, {
+            const result = await useAxios.post('/api/auth/signup', formData, {
                 headers: { "Content-Type": "multipart/form-data" },
                 withCredentials: true
             });
