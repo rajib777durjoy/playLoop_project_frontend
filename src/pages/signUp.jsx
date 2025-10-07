@@ -4,6 +4,7 @@ import { FaUserCircle } from "react-icons/fa";
 import { useNavigate } from "react-router";
 import useAxiosPublic from '../hooks/useAxiosPublic';
 import { ImSpinner9 } from "react-icons/im";
+import { showCustomAlert } from '../Component/CustomAlert';
 
 const SignUp = () => {
     const [step, setstep] = useState(1)
@@ -23,11 +24,11 @@ const SignUp = () => {
         const file = e.target.files[0];
         setBackendImage(file);
         setFrontendImage(URL.createObjectURL(file));
-        console.log('image::', URL.createObjectURL(file))
+        // console.log('image::', URL.createObjectURL(file))
     }
     const handleSubmit = async () => {
         if (!backendImage) {
-            return alert('please choose Profile image')
+            return showCustomAlert('please choose Profile image')
         }
         Setloading(true);
         const formData = new FormData();
@@ -36,19 +37,17 @@ const SignUp = () => {
         formData.append("password", Password);
         formData.append("photoUrl", backendImage);
         try {
-            const result = await useAxios.post('/api/auth/signup', formData, {
-                headers: { "Content-Type": "multipart/form-data" },
-                withCredentials: true
-            });
-            // console.log('post result::', result.data)
-            if (result?.data) {
+            const result = await useAxios.post('/api/auth/signup',formData,{
+                headers: { "Content-Type": "multipart/form-data" } });
+            console.log('post result::', result.data)
                 Setloading(false)
+                showCustomAlert("Account Created")
                 navigate('/');
-            }
-
+                
         } catch (err) {
             Setloading(false)
-            console.log('error message::', err)
+            showCustomAlert("signUp error")
+            console.log("signUp error",err)
         }
     }
     return (
@@ -71,7 +70,7 @@ const SignUp = () => {
                         <div className='flex justify-end mt-5'>
                             <button className='text-white bg-orange-500 px-4 py-2 rounded-lg' onClick={() => {
                                 if (!userName && !email) {
-                                    return alert("please filup the input")
+                                    return showCustomAlert("please filup the input")
                                 }
                                 setstep(step + 1)
                             }}>Next</button>
@@ -99,11 +98,11 @@ const SignUp = () => {
                             <button className='text-white bg-orange-400 cursor-pointer hover:bg-amber-600 px-4 py-2 rounded-lg' onClick={() => setstep(step - 1)}>Back</button>
                             <button className='text-white bg-orange-400 cursor-pointer hover:bg-amber-600 px-4 py-2 rounded-lg' onClick={() => {
                                 if (!Password && !ConfirmPassword) {
-                                    return alert("please filup the all field")
+                                    return showCustomAlert("please filup the all field")
                                 }
 
                                 if (Password !== ConfirmPassword) {
-                                    return alert("Please check your password field")
+                                    return showCustomAlert("Please check your password field")
                                 }
                                 setstep(step + 1)
                             }}>Next</button>
@@ -119,7 +118,7 @@ const SignUp = () => {
                         </h1>
                         <div className='flex items-center gap-6 mb-6'>
                             <div className='w-28 h-28 rounded-full border-4 border-gray-500 overflow-hidden shadow-lg'>
-                                {frontendImage ? <img src={frontendImage} /> : <FaUserCircle className='h-[100%] w-[100%] text-gray-500 p-2' />}
+                                {frontendImage ? <img src={frontendImage} className='w-[100%] h-[100%] rounded-full' /> : <FaUserCircle className='h-[100%] w-[100%] text-gray-500 p-2' />}
 
                             </div>
                             <div className='flex flex-col gap-2'>
@@ -128,7 +127,6 @@ const SignUp = () => {
                                  file:px-4 file:rounded-full file:border-0 file:font-semibold file:text-white cursor-pointer file:bg-orange-500 hover:file:bg-orange-700'/>
                             </div>
                         </div>
-
                         <div className='flex justify-between mt-5'>
                             <button className='text-white bg-orange-400 cursor-pointer hover:bg-amber-600 px-4 py-2 rounded-lg' onClick={() => setstep(step - 1)}>Back</button>
                             <button className='text-white bg-orange-400 cursor-pointer hover:bg-amber-600 px-4 py-2 rounded-lg' onClick={() => {
@@ -139,8 +137,10 @@ const SignUp = () => {
                             }}>{loading && <ImSpinner9 className='animate-spin ' /> || 'Create Account'}</button>
                         </div>
                     </>
-
                 )}
+                <div>
+                    <h2 className='text-white'>Already Have an Account <span onClick={() => navigate('/signIn')} className='text-blue-400 font-medium cursor-pointer ms-2'>Sign_IN</span></h2>
+                </div>
 
             </div>
         </div>
