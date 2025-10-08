@@ -6,6 +6,7 @@ import { showCustomAlert } from '../Component/CustomAlert';
 import useAxiosPublic from '../hooks/useAxiosPublic';
 import { ImSpinner9 } from 'react-icons/im';
 
+
 const SignIn = () => {
     const [step, setstep] = useState(1)
     const [email, setEmail] = useState("");
@@ -17,13 +18,10 @@ const SignIn = () => {
 
     const handleSign_In = async () => {
         Setloading(true)
-        const data = {
-            email,
-            password: Password
-        };
+        
         try {
-            const result = await useAxios.post('/api/auth/signin', data);
-            console.log('sign_In message::',result);
+            const result = await useAxios.post('/api/auth/signin',{email,password: Password});
+            console.log('sign_In message::', result?.data?.message);
             Setloading(false)
             showCustomAlert("sign_In Successfull")
             navigate('/');
