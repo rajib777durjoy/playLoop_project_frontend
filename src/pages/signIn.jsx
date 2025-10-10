@@ -85,7 +85,7 @@ const SignIn = () => {
                             <label className='text-white mx-2' htmlFor="showpass">Show Password</label>
                         </div>
                         <div className='my-2'>
-                            <h2 className='text-orange-400 text-sm hover:underline my-2 cursor-pointer'>Forget Password</h2>
+                            <h2 onClick={()=>navigate('/forgetpass')} className='text-orange-400 text-sm hover:underline my-2 cursor-pointer'>Forget Password</h2>
                             <h2 className='text-white'>Create A New Account <span onClick={() => navigate('/signUp')} className='text-blue-400 font-medium cursor-pointer ms-2'>Sign_Up</span></h2>
                         </div>
                         <div className='flex justify-between mt-5'>

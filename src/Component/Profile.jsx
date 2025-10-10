@@ -16,7 +16,7 @@ const Profile = () => {
     const provider = new GoogleAuthProvider();
     const dispatch = useDispatch()
     const navigate = useNavigate();
-    console.log("userData::", userData);
+    // console.log("userData::", userData);
     const useAxios = useAxiosPublic()
     const handleSignOut = async () => {
         try {
@@ -34,15 +34,13 @@ const Profile = () => {
     const handleGoogleAuth = async () => {
         try {
             const googleAuth = await signInWithPopup(auth, provider);
-            console.log("googleAuth", googleAuth.user.displayName)
-            if (googleAuth?.user?.displayName && googleAuth?.user?.email && googleAuth?.user?.photoURL) {
+            if (googleAuth?.user?.displayName) {
                 const formData = new FormData();
-                formData.append('userName', googleAuth.user?.displayName);
+                formData.append('userName', googleAuth?.user?.displayName);
                 formData.append("email", googleAuth?.user?.email);
-                formData.append("photoUrl", googleAuth?.user?.photoURL)
-                const result = await useAxios.post('/api/auth/googleAuthentication', formData)
+                formData.append("photoUrl",googleAuth?.user.photoURL);
+                const result = await useAxios.post('/api/auth/google',formData)
                 dispatch(setuserData(result.data))
-                console.log('googleauth::',result.data)
                 showCustomAlert("Google Authentication Successfully")
         
             }

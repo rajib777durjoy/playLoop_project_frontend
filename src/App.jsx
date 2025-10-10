@@ -7,6 +7,7 @@ import CustomAlert from './Component/CustomAlert';
 import Shorts from './pages/Shorts/Shorts';
 import GetCurrentUser from './customHook/getCurrentUser';
 import MobileProfile from './Component/MobileProfile';
+import ForgetPassword from './pages/ForgetPassword';
 
 const App = () => {
   GetCurrentUser()
@@ -17,8 +18,10 @@ const App = () => {
         <Route path='/shorts' element={<Shorts/>} />
         <Route path='/mobileProfile' element={<MobileProfile/>} />
       </Route>
+      
       <Route path='/signIn' element={<SignIn />} />
       <Route path='/signUp' element={<SignUp />} />
+      <Route path='/forgetpass' element={<ForgetPassword />} />
     </Routes>
   </>)
 };

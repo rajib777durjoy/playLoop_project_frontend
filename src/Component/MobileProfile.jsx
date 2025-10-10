@@ -8,12 +8,53 @@ import { GoVideo } from 'react-icons/go';
 import { MdOutlineSwitchAccount } from 'react-icons/md';
 import { SiYoutubeshorts } from 'react-icons/si';
 import { TiUserAddOutline } from 'react-icons/ti';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import useAxiosPublic from '../hooks/useAxiosPublic';
+import { setuserData } from '../redux/userSlice';
+import { showCustomAlert } from './CustomAlert';
+import { auth } from '../utils/firebase';
 
 const MobileProfile = () => {
     const {userData}=useSelector(state=>state.user);
-    const navigate= useNavigate()
+     const provider = new GoogleAuthProvider();
+    const dispatch = useDispatch()
+    const navigate = useNavigate();
+    // console.log("userData::", userData);
+    const useAxios = useAxiosPublic()
+    const handleSignOut = async () => {
+        try {
+            const result = await useAxios.get('/api/auth/signout');
+            dispatch(setuserData(null))
+            console.log(result.data)
+            showCustomAlert("SignOut Successfully")
+        } catch (err) {
+            console.log(err)
+            showCustomAlert("SignOut Error")
+        }
+
+    };
+
+    const handleGoogleAuth = async () => {
+        try {
+            const googleAuth = await signInWithPopup(auth, provider);
+            if (googleAuth?.user?.displayName) {
+                const formData = new FormData();
+                formData.append('userName', googleAuth?.user?.displayName);
+                formData.append("email", googleAuth?.user?.email);
+                formData.append("photoUrl",googleAuth?.user.photoURL);
+                const result = await useAxios.post('/api/auth/google',formData)
+                dispatch(setuserData(result.data))
+                showCustomAlert("Google Authentication Successfully")
+        
+            }
+
+        } catch (err) {
+            console.log(err)
+        }
+
+    }
     return (
         <div className='md:hidden  bg-[#0f0f0f] text-white flex flex-col '>
             <div className='w-[100%] h-[50px]'></div>
@@ -28,11 +69,11 @@ const MobileProfile = () => {
            </div>}
            {/* auth button */}
            <div className='flex gap-2 p-4 border-b border-gray-800 overflow-auto'>
-            <button className='bg-gray-800 text-nowrap px-3 py-1 rounded-2xl text-sm flex items-center justify-center gap-2'><FcGoogle className='text-xl' />SignIn with Google</button>
-            <button className='bg-gray-800 text-nowrap px-3 py-1 rounded-2xl text-sm flex items-center justify-center gap-2'><TiUserAddOutline className='text-xl' />Create new Account</button>
-            <button className='bg-gray-800 text-nowrap px-3 py-1 rounded-2xl text-sm flex items-center justify-center gap-2'><MdOutlineSwitchAccount className='text-xl' />SignIn with Other Account</button>
-            <button className='bg-gray-800 text-nowrap px-3 py-1 rounded-2xl text-sm flex items-center justify-center gap-2'><SiYoutubeshorts className='text-xl' />PL Studio</button>
-            <button  className='bg-gray-800 text-nowrap px-3 py-1 rounded-2xl text-sm flex items-center justify-center gap-2'><FiLogOut className='text-xl' />SignOut</button>
+            <button onclick={()=>handleGoogleAuth()} className='bg-gray-800 text-nowrap px-3 py-1 rounded-2xl text-sm flex items-center justify-center gap-2'><FcGoogle className='text-xl' />SignIn with Google</button>
+            <button onclick={()=>navigate('/signUp')} className='bg-gray-800 text-nowrap px-3 py-1 rounded-2xl text-sm flex items-center justify-center gap-2'><TiUserAddOutline className='text-xl' />Create new Account</button>
+            <button onclick={()=>navigate('/signIn')} className='bg-gray-800 text-nowrap px-3 py-1 rounded-2xl text-sm flex items-center justify-center gap-2'><MdOutlineSwitchAccount className='text-xl' />SignIn with Other Account</button>
+            <button onclick={()=>navigate('/studio')} className='bg-gray-800 text-nowrap px-3 py-1 rounded-2xl text-sm flex items-center justify-center gap-2'><SiYoutubeshorts className='text-xl' />PL Studio</button>
+            <button onclick={()=>handleSignOut()} className='bg-gray-800 text-nowrap px-3 py-1 rounded-2xl text-sm flex items-center justify-center gap-2'><FiLogOut className='text-xl' />SignOut</button>
            </div>
            <div className='flex flex-col mt-[20px]'>
             <ProfileMenuItem icon={<FaHistory/>} text={"History"} onclick={()=>navigate('/history')} />

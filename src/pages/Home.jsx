@@ -8,7 +8,6 @@ import { FaList } from "react-icons/fa";
 import { FaThumbsUp } from "react-icons/fa";
 import { FaSearch } from "react-icons/fa";
 import { FaMicrophone } from "react-icons/fa";
-import { FaTimes } from "react-icons/fa";
 import { IoIosAddCircle } from 'react-icons/io';
 import { GoVideo } from 'react-icons/go';
 import { SiYoutubeshorts } from 'react-icons/si';
@@ -17,6 +16,7 @@ import { useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router";
 import { useSelector } from "react-redux";
 import Profile from "../Component/profile";
+
 
 
 const Home = () => {
@@ -59,8 +59,8 @@ const Home = () => {
                        {userData?.Chennel &&<button className='hidden md:flex items-center gap-1 py-1 bg-[#272727] px-3 rounded-full cursor-pointer '>
                             <span className='text-lg'>+</span>
                             <span>Create</span>
-                        </button> ||<div>dummy</div>}
-                        {userData && <img src={`${userData?.photoUrl}`} onClick={()=>setpopup(!popup)} alt="image" className="w-[30px] h-[30px] md:inline hidden rounded-full"/> || <FaUserCircle className='text-3xl hidden md:flex text-gray-400'></FaUserCircle> }
+                        </button>}
+                        {userData && <img src={`${userData?.photoUrl}`} onClick={()=>setpopup(!popup)} alt="image" className="w-[30px] h-[30px] md:inline hidden rounded-full"/> || <FaUserCircle onClick={()=>setpopup(!popup)} className='text-3xl hidden md:flex text-gray-400'></FaUserCircle> }
                         
                         <FaSearch className='text-lg md:hidden flex'></FaSearch>
                     </div>
