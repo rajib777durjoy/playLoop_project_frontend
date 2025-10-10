@@ -5,6 +5,8 @@ import { useNavigate } from "react-router";
 import { showCustomAlert } from '../Component/CustomAlert';
 import useAxiosPublic from '../hooks/useAxiosPublic';
 import { ImSpinner9 } from 'react-icons/im';
+import { useDispatch } from 'react-redux';
+import { setuserData } from '../redux/userSlice';
 
 
 const SignIn = () => {
@@ -12,7 +14,8 @@ const SignIn = () => {
     const [email, setEmail] = useState("");
     const [Password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
-    const [loading, Setloading] = useState(false)
+    const [loading, Setloading] = useState(false);
+    const dispatch= useDispatch();
     let navigate = useNavigate();
     const useAxios = useAxiosPublic();
 
@@ -21,7 +24,8 @@ const SignIn = () => {
         
         try {
             const result = await useAxios.post('/api/auth/signin',{email,password: Password});
-            console.log('sign_In message::', result?.data?.message);
+            console.log('sign_In message::', result?.data);
+            dispatch(setuserData(result?.data))
             Setloading(false)
             showCustomAlert("sign_In Successfull")
             navigate('/');

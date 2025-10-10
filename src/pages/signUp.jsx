@@ -5,6 +5,8 @@ import { useNavigate } from "react-router";
 import useAxiosPublic from '../hooks/useAxiosPublic';
 import { ImSpinner9 } from "react-icons/im";
 import { showCustomAlert } from '../Component/CustomAlert';
+import { useDispatch } from 'react-redux';
+import { setuserData } from '../redux/userSlice';
 
 const SignUp = () => {
     const [step, setstep] = useState(1)
@@ -17,6 +19,7 @@ const SignUp = () => {
     const [frontendImage, setFrontendImage] = useState(null);
     const [loading, Setloading] = useState(false)
     const useAxios = useAxiosPublic();
+    const dispatch= useDispatch()
 
     let navigate = useNavigate();
 
@@ -39,7 +42,8 @@ const SignUp = () => {
         try {
             const result = await useAxios.post('/api/auth/signup',formData,{
                 headers: { "Content-Type": "multipart/form-data" } });
-            console.log('post result::', result.data)
+            console.log('post result::', result?.data)
+               dispatch(setuserData(result?.data))
                 Setloading(false)
                 showCustomAlert("Account Created")
                 navigate('/');
