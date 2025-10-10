@@ -5,8 +5,10 @@ import SignIn from './pages/signIn';
 import SignUp from './pages/signUp';
 import CustomAlert from './Component/CustomAlert';
 import Shorts from './pages/Shorts/Shorts';
+import GetCurrentUser from './customHook/getCurrentUser';
 
 const App = () => {
+  GetCurrentUser()
   return (<>
     <CustomAlert />
     <Routes>

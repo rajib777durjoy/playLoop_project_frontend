@@ -15,6 +15,9 @@ import { SiYoutubeshorts } from 'react-icons/si';
 import { MdOutlineSubscriptions } from 'react-icons/md';
 import { useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router";
+import { useSelector } from "react-redux";
+import Profile from "../Component/profile";
+
 
 const Home = () => {
     const navigate= useNavigate();
@@ -22,7 +25,10 @@ const Home = () => {
     const [sidebarOpen, setSidebarOpen] = useState(true);
     const [selectedItem, setSeletedItem] = useState("Home");
     const [active,setActive]=useState("Home");
+    const {userData}= useSelector((state)=>state.user);
+    const [popup,setpopup]=useState(false);
 
+    console.log("userdata::=>",userData);
     const categories =[
         "Music","Gaming","Movies","TV Shows","News","Trending","Entertainment","Education","Science & Tech","Art","Comedy","Vlogs"
 ];
@@ -50,11 +56,12 @@ const Home = () => {
                     </div>
                     {/* right */}
                     <div className='flex items-center gap-3'>
-                        <button className='hidden md:flex items-center gap-1 py-1 bg-[#272727] px-3 rounded-full cursor-pointer '>
+                       {userData?.Chennel &&<button className='hidden md:flex items-center gap-1 py-1 bg-[#272727] px-3 rounded-full cursor-pointer '>
                             <span className='text-lg'>+</span>
                             <span>Create</span>
-                        </button>
-                        <FaUserCircle className='text-3xl hidden md:flex text-gray-400'></FaUserCircle>
+                        </button> ||<div>dummy</div>}
+                        {userData && <img src={`${userData?.photoUrl}`} onClick={()=>setpopup(!popup)} alt="image" className="w-[30px] h-[30px] md:inline hidden rounded-full"/> || <FaUserCircle className='text-3xl hidden md:flex text-gray-400'></FaUserCircle> }
+                        
                         <FaSearch className='text-lg md:hidden flex'></FaSearch>
                     </div>
                 </div>
@@ -97,19 +104,20 @@ const Home = () => {
             {location.pathname === '/' && <div className="flex items-center gap-3 overflow-x-auto scrollbar-hide pt-2 mt-[60px]">{categories.map((cat,idx)=>(
                 <button key={idx} className="whitespace-nowrap bg-[#272727] px-4 py-1 rounded-lg  text-sm hover:bg-gray-700">{cat}</button>
             ))}
+           
             </div>}
-            
+             {popup && <Profile></Profile>}
             <div className="mt-2">
                 <Outlet></Outlet>
             </div>
             </main>
             {/* bottom nav */}
-            <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-[#0f0f0f] border-t border-gray-800 flex justify-around py-2 z-10">
+            <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-[#0f0f0f] border-t border-gray-800 flex justify-around items-center py-2 z-10">
              <MobileSizeNav icon={<FaHome/>} text={"Home"} active={active === "Home"} onClick={()=>setActive("Home")}></MobileSizeNav>
              <MobileSizeNav icon={<SiYoutubeshorts/>} text={"Shorts"} active={active === "Shorts"} onClick={()=>setActive("Shorts")}></MobileSizeNav>
              <MobileSizeNav icon={<IoIosAddCircle/>}  active={active === "+"} onClick={()=>setActive("+")}></MobileSizeNav>
              <MobileSizeNav icon={<MdOutlineSubscriptions/>} text={"Subscriptions"} active={active === "Subscriptions"} onClick={()=>setActive("Subscriptions")}></MobileSizeNav>
-             <MobileSizeNav icon={<FaUserCircle/>} text={"You"} active={active === "You"} onClick={()=>setActive("You")}></MobileSizeNav>
+            <MobileSizeNav  icon={userData && <img src={`${userData?.photoUrl}`} alt="profile" className="w-[40px] h-[40px] rounded-full " /> || <FaUserCircle/>} text={"You"} active={active === "You"} onClick={()=>setActive("You")}></MobileSizeNav>
             </nav>
         </div>
     );
