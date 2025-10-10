@@ -113,11 +113,11 @@ const Home = () => {
             </main>
             {/* bottom nav */}
             <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-[#0f0f0f] border-t border-gray-800 flex justify-around items-center py-2 z-10">
-             <MobileSizeNav icon={<FaHome/>} text={"Home"} active={active === "Home"} onClick={()=>setActive("Home")}></MobileSizeNav>
+             <MobileSizeNav icon={<FaHome/>} text={"Home"} active={active === "Home"} onClick={()=>{setActive("Home");navigate('/')}}></MobileSizeNav>
              <MobileSizeNav icon={<SiYoutubeshorts/>} text={"Shorts"} active={active === "Shorts"} onClick={()=>setActive("Shorts")}></MobileSizeNav>
              <MobileSizeNav icon={<IoIosAddCircle/>}  active={active === "+"} onClick={()=>setActive("+")}></MobileSizeNav>
              <MobileSizeNav icon={<MdOutlineSubscriptions/>} text={"Subscriptions"} active={active === "Subscriptions"} onClick={()=>setActive("Subscriptions")}></MobileSizeNav>
-            <MobileSizeNav  icon={userData && <img src={`${userData?.photoUrl}`} alt="profile" className="w-[40px] h-[40px] rounded-full " /> || <FaUserCircle/>} text={"You"} active={active === "You"} onClick={()=>setActive("You")}></MobileSizeNav>
+            <MobileSizeNav  icon={userData && <img src={`${userData?.photoUrl}`} alt="profile" className="w-[40px] h-[40px] rounded-full " /> || <FaUserCircle/>} text={"You"} active={active === "You"} onClick={()=>{setActive("You"); navigate('/mobileProfile')}}></MobileSizeNav>
             </nav>
         </div>
     );

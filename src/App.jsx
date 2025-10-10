@@ -6,6 +6,7 @@ import SignUp from './pages/signUp';
 import CustomAlert from './Component/CustomAlert';
 import Shorts from './pages/Shorts/Shorts';
 import GetCurrentUser from './customHook/getCurrentUser';
+import MobileProfile from './Component/MobileProfile';
 
 const App = () => {
   GetCurrentUser()
@@ -14,6 +15,7 @@ const App = () => {
     <Routes>
       <Route path='/' element={<Home />}>
         <Route path='/shorts' element={<Shorts/>} />
+        <Route path='/mobileProfile' element={<MobileProfile/>} />
       </Route>
       <Route path='/signIn' element={<SignIn />} />
       <Route path='/signUp' element={<SignUp />} />
