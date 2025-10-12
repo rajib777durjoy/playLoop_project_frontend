@@ -58,7 +58,7 @@ const Profile = () => {
                     <div>
                         <h4 className='font-semibold'>{userData?.name}</h4>
                         <p className='text-sm text-gray-400'>{userData?.email}</p>
-                        <p className='text-sm text-blue-400 cursor-pointer hover:underline'>{userData?.Channel ? "view channel" : "create channel"}</p>
+                        <p onClick={()=>userData?.channel?navigate('/viewChannel'):navigate('/createChannel')} className='text-sm text-blue-400 cursor-pointer hover:underline'>{userData?.Channel ? "view channel" : "create channel"}</p>
                     </div>
                 </div>}
                 <div className='flex flex-col py-2'>

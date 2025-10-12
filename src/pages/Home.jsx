@@ -15,7 +15,8 @@ import { MdOutlineSubscriptions } from 'react-icons/md';
 import { useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router";
 import { useSelector } from "react-redux";
-import Profile from "../Component/profile";
+import Profile from "../Component/Profile";
+
 
 
 
@@ -56,9 +57,9 @@ const Home = () => {
                     </div>
                     {/* right */}
                     <div className='flex items-center gap-3'>
-                       {userData?.Chennel &&<button className='hidden md:flex items-center gap-1 py-1 bg-[#272727] px-3 rounded-full cursor-pointer '>
+                       {userData?.Chennel &&<button onClick={()=>navigate('/CreatePage')} className='hidden md:flex items-center gap-1 py-1 bg-[#272727] px-3 rounded-full cursor-pointer '>
                             <span className='text-lg'>+</span>
-                            <span>Create</span>
+                            <span >Create</span>
                         </button>}
                         {userData && <img src={`${userData?.photoUrl}`} onClick={()=>setpopup(!popup)} alt="image" className="w-[30px] h-[30px] md:inline hidden rounded-full"/> || <FaUserCircle onClick={()=>setpopup(!popup)} className='text-3xl hidden md:flex text-gray-400'></FaUserCircle> }
                         
@@ -115,7 +116,7 @@ const Home = () => {
             <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-[#0f0f0f] border-t border-gray-800 flex justify-around items-center py-2 z-10">
              <MobileSizeNav icon={<FaHome/>} text={"Home"} active={active === "Home"} onClick={()=>{setActive("Home");navigate('/')}}></MobileSizeNav>
              <MobileSizeNav icon={<SiYoutubeshorts/>} text={"Shorts"} active={active === "Shorts"} onClick={()=>setActive("Shorts")}></MobileSizeNav>
-             <MobileSizeNav icon={<IoIosAddCircle/>}  active={active === "+"} onClick={()=>setActive("+")}></MobileSizeNav>
+             <MobileSizeNav icon={<IoIosAddCircle/>}  active={active === "+"} onClick={()=>{setActive("+");navigate('/CreatePage')}}></MobileSizeNav>
              <MobileSizeNav icon={<MdOutlineSubscriptions/>} text={"Subscriptions"} active={active === "Subscriptions"} onClick={()=>setActive("Subscriptions")}></MobileSizeNav>
             <MobileSizeNav  icon={userData && <img src={`${userData?.photoUrl}`} alt="profile" className="w-[40px] h-[40px] rounded-full " /> || <FaUserCircle/>} text={"You"} active={active === "You"} onClick={()=>{setActive("You"); navigate('/mobileProfile')}}></MobileSizeNav>
             </nav>

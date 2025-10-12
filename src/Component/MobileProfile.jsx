@@ -64,7 +64,7 @@ const MobileProfile = () => {
              <div className='flex flex-col'>
                <span>{userData?.userName}</span>
                <span>{userData?.email}</span>
-               <p className='text-sm text-blue-400 cursor-pointer hover:underline'>{userData?.Channel ? "view channel":"create channel"}</p>
+               <p onClick={()=>userData?.channel?navigate('/viewChannel'):navigate('/createChannel')} className='text-sm text-blue-400 cursor-pointer hover:underline'>{userData?.Channel ? "view channel":"create channel"}</p>
              </div>
            </div>}
            {/* auth button */}
@@ -72,7 +72,7 @@ const MobileProfile = () => {
             <button onclick={()=>handleGoogleAuth()} className='bg-gray-800 text-nowrap px-3 py-1 rounded-2xl text-sm flex items-center justify-center gap-2'><FcGoogle className='text-xl' />SignIn with Google</button>
             <button onclick={()=>navigate('/signUp')} className='bg-gray-800 text-nowrap px-3 py-1 rounded-2xl text-sm flex items-center justify-center gap-2'><TiUserAddOutline className='text-xl' />Create new Account</button>
             <button onclick={()=>navigate('/signIn')} className='bg-gray-800 text-nowrap px-3 py-1 rounded-2xl text-sm flex items-center justify-center gap-2'><MdOutlineSwitchAccount className='text-xl' />SignIn with Other Account</button>
-            <button onclick={()=>navigate('/studio')} className='bg-gray-800 text-nowrap px-3 py-1 rounded-2xl text-sm flex items-center justify-center gap-2'><SiYoutubeshorts className='text-xl' />PL Studio</button>
+            {userData?.Channel && <button onclick={()=>navigate('/studio')} className='bg-gray-800 text-nowrap px-3 py-1 rounded-2xl text-sm flex items-center justify-center gap-2'><SiYoutubeshorts className='text-xl' />PL Studio</button>}
             <button onclick={()=>handleSignOut()} className='bg-gray-800 text-nowrap px-3 py-1 rounded-2xl text-sm flex items-center justify-center gap-2'><FiLogOut className='text-xl' />SignOut</button>
            </div>
            <div className='flex flex-col mt-[20px]'>
