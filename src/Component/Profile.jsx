@@ -11,13 +11,16 @@ import { showCustomAlert } from './CustomAlert';
 import { setuserData } from '../redux/userSlice';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '../utils/firebase';
+import { useEffect } from 'react';
 const Profile = () => {
-    const { userData } = useSelector(state => state.user);
+    const { userData} = useSelector(state => state.user);
+    const {channelData} = useSelector(state => state.user);
     const provider = new GoogleAuthProvider();
     const dispatch = useDispatch()
     const navigate = useNavigate();
-    // console.log("userData::", userData);
-    const useAxios = useAxiosPublic()
+    console.log("userData::", userData);
+    console.log("channelData::", channelData);
+    const useAxios = useAxiosPublic();
     const handleSignOut = async () => {
         try {
             const result = await useAxios.get('/api/auth/signout');
@@ -30,21 +33,22 @@ const Profile = () => {
         }
 
     };
+   
 
     const handleGoogleAuth = async () => {
         try {
             const googleAuth = await signInWithPopup(auth, provider);
-            if (googleAuth?.user?.displayName) {
-                const formData = new FormData();
-                formData.append('userName', googleAuth?.user?.displayName);
-                formData.append("email", googleAuth?.user?.email);
-                formData.append("photoUrl",googleAuth?.user.photoURL);
-                const result = await useAxios.post('/api/auth/google',formData)
+            if (googleAuth?.user?.email) {
+                const userInfo = {
+                    userName: googleAuth?.user?.displayName,
+                    email: googleAuth?.user?.email,
+                    photoUrl: googleAuth?.user?.photoURL
+                }
+                const result = await useAxios.post('/api/auth/Authgoogle',userInfo)
+                console.log('resultMessage::', result.data)
                 dispatch(setuserData(result.data))
                 showCustomAlert("Google Authentication Successfully")
-        
             }
-
         } catch (err) {
             console.log(err)
         }
@@ -58,13 +62,13 @@ const Profile = () => {
                     <div>
                         <h4 className='font-semibold'>{userData?.name}</h4>
                         <p className='text-sm text-gray-400'>{userData?.email}</p>
-                        <p onClick={()=>userData?.channel?navigate('/viewChannel'):navigate('/createChannel')} className='text-sm text-blue-400 cursor-pointer hover:underline'>{userData?.Channel ? "view channel" : "create channel"}</p>
+                        <p onClick={() => userData ? navigate('/viewChannel') : navigate('/createChannel')} className='text-sm text-blue-400 cursor-pointer hover:underline'>{userData._id == channelData?.owner?._id ? "view channel" : "create channel"}</p>
                     </div>
                 </div>}
                 <div className='flex flex-col py-2'>
-                    <button onClick={handleGoogleAuth} className='flex items-center gap-3 px-4 py-2 hover:bg-gray-700 '><FcGoogle />SignIN with Google</button>
+                    <button onClick={handleGoogleAuth} className='flex items-center gap-3 px-4 py-2 hover:bg-gray-700 '><FcGoogle />SignIn with Google</button>
                     <button onClick={() => navigate('/signUp')} className='flex items-center gap-3 px-4 py-2 hover:bg-gray-700 '><TiUserAddOutline />Create  new Account</button>
-                    <button onClick={() => navigate('/signIn')} className='flex items-center gap-3 px-4 py-2 hover:bg-gray-700 '><MdOutlineSwitchAccount />SignIN with Other Account</button>
+                    <button onClick={() => navigate('/signIn')} className='flex items-center gap-3 px-4 py-2 hover:bg-gray-700 '><MdOutlineSwitchAccount />SignIn with Other Account</button>
                     {userData?.Channel && <button className='flex items-center gap-3 px-4 py-2 hover:bg-gray-700 '><SiYoutubeshorts className='w-5 h-5 text-orange-400' />PL Studio</button>}
                     {userData && <button onClick={() => handleSignOut()} className='flex items-center gap-3 px-4 py-2 hover:bg-gray-700 '><FiLogOut />Sign Out</button>}
                 </div>

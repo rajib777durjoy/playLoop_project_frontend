@@ -4,7 +4,8 @@ import { TfiVideoClapper } from "react-icons/tfi";
 import { useNavigate } from 'react-router';
 const ViewChannel = () => {
     const navigate= useNavigate();
-    const {channelData}= useSelector(state=>state.user)
+    const {channelData}= useSelector(state=>state.user);
+    console.log(channelData)
     return (
         <div className='flex flex-col gap-3'>
             {/* banner */}

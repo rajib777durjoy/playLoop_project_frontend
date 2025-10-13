@@ -10,10 +10,11 @@ import MobileProfile from './Component/MobileProfile';
 import ForgetPassword from './pages/ForgetPassword';
 import CreateChannel from './pages/Channel/CreateChannel';
 import ViewChannel from './pages/Channel/ViewChannel';
-import getChannelData from './customHook/getChannelData';
+
 import UpdateChannel from './pages/Channel/UpdateChannel';
 import { useSelector } from 'react-redux';
 import CreatePage from './pages/Shorts/CreatePage';
+import useChannelData from './customHook/useChannelData';
 
 const ProtectRoute = ({userData,children})=>{
   if(!userData){
@@ -24,7 +25,7 @@ const ProtectRoute = ({userData,children})=>{
 }
 const App = () => {
   GetCurrentUser()
-  getChannelData()
+  useChannelData()
   const {userData}= useSelector(state=>state.user)
   return (<>
     <CustomAlert />
